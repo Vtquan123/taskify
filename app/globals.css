@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.4.0/remixicon.min.css");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "remixicon";
+  src: url('https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.eot?t=1729600608771'); /* IE9*/
+  src: url('https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.eot?t=1729600608771#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url("https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.woff2?t=1729600608771") format("woff2"),
+  url("https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.woff?t=1729600608771") format("woff"),
+  url('https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.ttf?t=1729600608771') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.svg?t=1729600608771#remixicon') format('svg'); /* iOS 4.1- */
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --font-family: 'Lato', sans-serif;
+
+    --background: #fff;
+    --background-1: rgba(24, 78, 46, 0.3);
+    --background-2: #fbfbfb;
+    --background-3: rgba(157, 204, 255, 0.3);
+    --foreground: #70b6c1;
+    --foreground-1: #abdfe7;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+
+    --primary: #2b87f2;
+    --primary-foreground: #fff;
+
+    --secondary: rgba(73, 187, 189, 0.6);
+    --secondary-foreground: #fff;
+
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+
+    --radius: 0.5rem;
+
+    --accent-green: #40b27f;
+    --accent-orange: #c78b4a;
+    --accent-blue: #29B9E7;
+    --accent-violet: #5B72EE;
+    --accent-yellow: rgba(244, 140, 6, 0.3);
+    --accent-pink: #d4574b;
+    --accent-black: #000;
+    --accent-white: #fff;
+    --accent-gray-1: #585858;
+    --accent-red: #ff0402;
+
+    --text-black-1: #000;
+    --text-black-2: #202020;
+    --text-black-3: #1e1e1e;
+    --text-white: #fff;
+    --text-blue: #2F327D;
+    --text-violet: #B2B3CF;
+    --text-red: #ff0402;
+    --text-gray-1: #585858;
+    --text-gray-2: #696984;
+    --text-gray-3: #5B5B5B;
+    --text-gray-4: #ACACAC;
+    --text-gray-5: #9D9B9B;
+
+    --border-gray: #ececec;
+
+    --linear-blue: linear-gradient(to right, #136CB5 0%, #49BBBD 100%);
+  }
+
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+  }
+}
