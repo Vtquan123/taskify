@@ -19,7 +19,7 @@ module.exports = {
   prefix: "",
   theme: {
   	fontFamily: {
-  		sans: ["Lato", "sans-serif"]
+			sans: ["Lato", "sans-serif"],
   	},
   	container: {
   		center: 'true',
@@ -29,7 +29,10 @@ module.exports = {
   		}
   	},
   	extend: {
-  		spacing: generateSpacing(500),
+			spacing: generateSpacing(500),
+			fontSize: {
+				base: '14px'
+			},
   		colors: {
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
@@ -120,7 +123,7 @@ module.exports = {
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out'
-  		}
+			},
   	}
   },
   plugins: [require("tailwindcss-animate")],

@@ -1,2 +1,7 @@
 export * from './button'
 export * from './accordion'
+export * from './avatar'
+export * from './dropdown-menu'
+export * from './form'
+export * from './label'
+export * from './input'
