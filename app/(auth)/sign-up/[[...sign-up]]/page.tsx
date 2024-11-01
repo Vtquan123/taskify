@@ -124,27 +124,6 @@ export default function SignUp() {
           <Button type="submit" className="flex w-full" loading={loading}>Sign Up</Button>
         </form>
       </FormProvider>
-      {/* <div className="text-sm h-[1px] bg-gray-300 my-6 relative">
-        <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 bg-white text-textGray1">
-          Or
-        </span>
-      </div>
-      <div className="flex gap-4">
-            <Button
-              variant="outline"
-              className="flex-1"
-              onClick={() => handleOauth('oauth_google')}
-            >
-              <img src="/icons/google.svg" className="w-[20px]" />
-            </Button>
-            <Button
-              variant="outline"
-              className="flex-1"
-              onClick={() => handleOauth('oauth_facebook')}
-            >
-              <img src="/icons/facebook.svg" className="w-[20px]" />
-            </Button>
-      </div> */}
     </div>
     <div>
       You had an account?

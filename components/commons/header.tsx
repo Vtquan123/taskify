@@ -126,7 +126,11 @@ const UserNav: React.FC<any> = ({ className }) => {
     className
   )}>
     <p className="text-[1.5rem] font-semibold">{title}</p>
-    <div>
+    <div className="flex items-center gap-3">
+      <Button variant="ghost" className="p-0 hover:bg-transparent">
+        <i className="ri-settings-4-line text-[24px]" />
+      </Button>
+      <div className="w-[1px] bg-borderGray h-[1.5rem]"/>
       <DropdownMenu>
         <DropdownMenuTrigger>
           <Avatar>

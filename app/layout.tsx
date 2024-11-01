@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import {TRPCProvider} from "../trpc/client"
 
 export const metadata: Metadata = {
   title: "taskify",
@@ -16,7 +17,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ClerkProvider>
-          {children}
+          <TRPCProvider>
+            {children}
+          </TRPCProvider>
         </ClerkProvider>
       </body>
     </html>
