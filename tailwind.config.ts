@@ -125,7 +125,8 @@ module.exports = {
   			'accordion-up': 'accordion-up 0.2s ease-out'
 			},
 			transitionProperty: {
-				'width': 'width'
+				'width': 'width',
+				'padding': 'padding'
 			}
   	}
   },

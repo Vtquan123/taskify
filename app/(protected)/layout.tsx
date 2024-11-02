@@ -52,7 +52,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
     <SideNav data={getNavigation(collapse)} className="hidden md:flex" collapse={collapse} handleCollapse={handleCollapse} />
     <HeadNav className="md:hidden" />
     <div className={cn(
-      "pt-[60px] md:pt-0 md:pl-[250px] flex flex-col",
+      "pt-[60px] md:pt-0 md:pl-[250px] flex flex-col transition-padding",
       `${collapse ? 'md:pl-[60px]' : ''}`
     )}>
       <UserNav/>
