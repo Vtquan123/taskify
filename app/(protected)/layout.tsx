@@ -1,14 +1,18 @@
 "use client"
 
+import { cn } from "@/lib/utils"
 import { SideNav, HeadNav, UserNav } from "@components"
 import Image from "next/image"
 import Link from "next/link"
-import React from "react"
+import React, { useState } from "react"
 
-const DEFAULT_NAVIGATION = [
+const getNavigation = (collapse?: boolean) => [
     {
       id: 'nav.header', render: () => <Link href="/dashboard" className="flex justify-center" >
-      <Image width={160} height={50} src="/images/logo.svg" alt="logo"/>
+        {collapse
+          ? <Image width={18} height={18} src="/images/lightning.svg" alt="logo" />
+          : <Image width={160} height={50} src="/images/logo.svg" alt="logo"/>
+        }
     </Link> },
     { id: 'nav.divider' },
     {
@@ -42,12 +46,17 @@ const DEFAULT_NAVIGATION = [
   ]
 
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
+  const [collapse, setCollapse] = useState(false)
+  const handleCollapse = () => setCollapse(prev => !prev)
   return <>
-    <SideNav data={DEFAULT_NAVIGATION} className="hidden md:flex" />
+    <SideNav data={getNavigation(collapse)} className="hidden md:flex" collapse={collapse} handleCollapse={handleCollapse} />
     <HeadNav className="md:hidden" />
-    <div className="pt-[60px] md:pt-0 md:pl-[250px] flex flex-col">
+    <div className={cn(
+      "pt-[60px] md:pt-0 md:pl-[250px] flex flex-col",
+      `${collapse ? 'md:pl-[60px]' : ''}`
+    )}>
       <UserNav/>
-      <div className="flex-1 p-4">
+      <div className="flex-1 p-6">
         {children}
       </div>
     </div>

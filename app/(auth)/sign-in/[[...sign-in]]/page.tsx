@@ -86,7 +86,7 @@ export default function SignIn() {
           <Button type="submit" className="flex w-full" loading={loading} disabled={loading}>Sign In</Button>
         </form>
       </FormProvider>
-      <div className="text-sm h-[1px] bg-gray-300 my-6 relative">
+      <div className="text-sm h-[1px] bg-gray-300 my-3 relative">
         <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 bg-white text-textGray1">
           Or
         </span>
@@ -106,7 +106,7 @@ export default function SignIn() {
             >
               <img src="/icons/facebook.svg" className="w-[20px]" />
             </Button>
-          </div>
+      </div>
     </div>
     <div>
       Don't have an account?

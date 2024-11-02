@@ -23,6 +23,8 @@ AccordionItem.displayName = "AccordionItem"
 
 export interface AccordionTriggerProps extends React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger> {
   isParent?: boolean
+  children?: React.ReactNode
+  className?: string
 }
 
 const AccordionTrigger = React.forwardRef<
