@@ -44,8 +44,8 @@ export default function SignIn() {
     try {
       await signIn.authenticateWithRedirect({
         strategy: method as any,
-        redirectUrl: '/',
-        redirectUrlComplete: '/',
+        redirectUrl: '/dashboard',
+        redirectUrlComplete: '/dashboard',
       });
     } catch (err: any) {
       throw new Error(err);
@@ -86,7 +86,7 @@ export default function SignIn() {
           <Button type="submit" className="flex w-full" loading={loading} disabled={loading}>Sign In</Button>
         </form>
       </FormProvider>
-      <div className="text-sm h-[1px] bg-gray-300 my-3 relative">
+      <div className="text-sm h-[1px] bg-gray-300 my-4 relative mx-6">
         <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 bg-white text-textGray1">
           Or
         </span>

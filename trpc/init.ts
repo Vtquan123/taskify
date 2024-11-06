@@ -1,16 +1,20 @@
 import {initTRPC, TRPCError} from '@trpc/server'
 import { Context } from './context'
+import {PrismaClient} from '@prisma/client'
 
 const t = initTRPC.context<Context>().create()
+export const prisma = new PrismaClient()
 
-const isAuth = t.middleware(({ next, ctx }) => { 
+const isAuth = t.middleware( async ({ next, ctx }) => { 
   if (!ctx?.auth?.userId) {
-    throw new TRPCError({code: 'UNAUTHORIZED'})
+    await prisma.$disconnect()
+    throw new TRPCError({ code: 'UNAUTHORIZED' })
   }
 
   return next({
     ctx: {
-      auth: ctx.auth
+      auth: ctx.auth,
+      prisma
     }
   })
 })
