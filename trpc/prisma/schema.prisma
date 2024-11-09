@@ -13,20 +13,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Theme {
+  light
+  dark
+}
+
+type Setting {
+  theme Theme @default(light)
+}
+
 model User {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @unique
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId String  @unique
   banned Boolean @default(false)
 
   email       String @unique
   emailObject Json
 
-  firstName     String
-  lastName      String
-  birthday      String  @default("")
-  gender        String  @default("")
+  firstName    String
+  lastName     String
+  birthday     String   @default("")
+  gender       String   @default("")
   phoneNumbers String[] @default([])
-  imageUrl      String  @default("")
+  imageUrl     String   @default("")
 
   username         String? @unique
   passwordEnabled  Boolean
@@ -36,4 +45,6 @@ model User {
 
   createdAt DateTime
   updatedAt DateTime
+
+  setting Setting
 }

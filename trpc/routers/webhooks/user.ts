@@ -27,7 +27,13 @@ export const webhookUserRouter = createTRPCRouter({
         object: data.object,
 
         createdAt: new Date(data.created_at).toISOString(),
-        updatedAt: new Date(data.updated_at).toISOString()
+        updatedAt: new Date(data.updated_at).toISOString(),
+        
+        setting: {
+          set: {
+            theme: 'light'
+          }
+        }
     }})
   }),
   updateUser: publicProcedure.input(z.object({
