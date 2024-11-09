@@ -4,6 +4,7 @@ import { UserWebhookEvent } from "@clerk/nextjs/server"
 
 export async function handler(req: Request) {
   const eventData = await verifyWebhook(req) as UserWebhookEvent
+  console.log(eventData)
   switch (eventData.type) {
     case "user.created":
       await caller.webhooks.user.createUser({

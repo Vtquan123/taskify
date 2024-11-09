@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils"
 import { AlignJustify } from "lucide-react"
-import React, { useState } from "react"
+import React from "react"
 import {
   Button,
   Accordion,
@@ -23,6 +23,11 @@ import { usePathname } from "next/navigation"
 import startCase from 'lodash/startCase'
 import { useClerk } from "@clerk/nextjs"
 import Link from "next/link"
+import { useQueryClient } from "@tanstack/react-query"
+import { getQueryKey } from "@trpc/react-query"
+import { trpc } from "@/trpc/client"
+import {User} from '@prisma/client'
+import { getName } from "@/utils/client/common"
 
 type NavItem = {
   id: string
@@ -102,13 +107,13 @@ const renderNavigation = (data: NavItem[], collapse?: boolean) => {
 const SideNav: React.FC<SideNavProps> = ({ data, className, collapse, handleCollapse = () => { } }) => {
   return (
     <nav id="side-nav" className={cn(
-      'h-[100vh] w-[250px] bg-background2 border-r-[1px] border-borderGray fixed top-0 flex flex-col p-4 z-50 transition-width',
+      'h-[100vh] w-[250px] bg-background2 border-r-[1px] border-borderGray fixed top-0 flex flex-col p-3 z-50 transition-width',
       `${collapse ? 'w-[60px] p-2' : ''}`,
       className
     )}>
       {renderNavigation(data, collapse)}
       <div className={cn(
-        "absolute right-0 top-[66px] translate-x-1/2 transition-all",
+        "absolute right-0 top-[62px] translate-x-1/2 transition-all",
         `${collapse ? 'top-[33px]' : ''}`
       )}>
         <Button variant="outline" size="icon" className="rounded-[20px] w-[30px] h-[30px]" onClick={handleCollapse}>
@@ -139,6 +144,10 @@ const UserNav: React.FC<any> = ({ className }) => {
   const pathName = usePathname()
   const title = startCase(pathName.split('/')[1])
   const { signOut } = useClerk()
+  const queryClient = useQueryClient()
+  const user = queryClient.getQueryData(getQueryKey(trpc.user.me)) as User
+
+  const {name, shortName} = getName(user?.firstName, user?.lastName)
 
   const handleLogOut = () => signOut({redirectUrl: '/sign-in'})
 
@@ -155,12 +164,12 @@ const UserNav: React.FC<any> = ({ className }) => {
       <DropdownMenu>
         <DropdownMenuTrigger>
           <Avatar>
-            <AvatarImage src='' alt="@user" />
-            <AvatarFallback>VQ</AvatarFallback>
+            <AvatarImage src={user?.profileImageUrl || ''} alt="@user" />
+            <AvatarFallback>{shortName}</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuLabel>Vu Quan</DropdownMenuLabel>
+          <DropdownMenuLabel>{name}</DropdownMenuLabel>
           <DropdownMenuSeparator/>
           <DropdownMenuItem>
             <i className="ri-user-3-line"/>

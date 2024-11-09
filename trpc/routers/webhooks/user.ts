@@ -66,7 +66,7 @@ export const webhookUserRouter = createTRPCRouter({
     {
       await prisma.user.delete({
       where: {
-        id
+        userId: id
       }
     })}
   })

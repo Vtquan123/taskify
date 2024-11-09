@@ -10,11 +10,12 @@ const isAuth = t.middleware( async ({ next, ctx }) => {
     await prisma.$disconnect()
     throw new TRPCError({ code: 'UNAUTHORIZED' })
   }
-
+  const user = await prisma.user.findFirst({where: {userId: ctx.auth.userId}})
   return next({
     ctx: {
       auth: ctx.auth,
-      prisma
+      prisma,
+      user
     }
   })
 })

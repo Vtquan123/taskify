@@ -1,11 +1,12 @@
 "use client"
 
-import { useSignIn } from "@clerk/nextjs";
+import { cn } from "@/lib/utils";
+import { useSignIn, useSignUp, SignIn as CLerkSignIn } from "@clerk/nextjs";
 import { Button, FormControl, FormField, FormItem, Input } from "@components";
 import Image from 'next/image'
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 type SignInForm = {
@@ -16,8 +17,10 @@ type SignInForm = {
 export default function SignIn() {
   const method = useForm<SignInForm>()
   const { isLoaded, signIn, setActive } = useSignIn()
+  const { signUp, setActive: setSignUpActive } = useSignUp()
   
   const [loading, setLoading] = useState(false)
+  const [oAuthLoading, setOAuthLoading] = useState('')
   const router = useRouter()
 
   const handleSignIn = async (data:SignInForm) => { 
@@ -40,19 +43,64 @@ export default function SignIn() {
   }
   
   const handleOauth = async (method: string) => {
-    if (!isLoaded) return;
+    if (!isLoaded || !signIn || !signUp) return;
+
     try {
-      await signIn.authenticateWithRedirect({
-        strategy: method as any,
-        redirectUrl: '/dashboard',
-        redirectUrlComplete: '/dashboard',
-      });
+      setOAuthLoading(method)
+
+      // Transfer OAuth account to existed account
+      const userExistsButNeedsToSignIn = signUp?.verifications.externalAccount.status === 'transferable' && signUp.verifications.externalAccount.error?.code === 'external_account_exists'
+      if (userExistsButNeedsToSignIn) {
+        const res = await signIn.create({ transfer: true })
+        
+        if (res.status === 'complete') {
+          setActive({
+            session: res.createdSessionId
+          })
+          router.push('/dashboard')
+        }
+      }
+
+      // Create an account for an OAuth account
+      const userNeedsToBeCreated = signIn.firstFactorVerification.status === 'transferable' && signIn.firstFactorVerification.error?.code === 'external_account_not_found'
+      if (userNeedsToBeCreated) {
+        const res = await signUp.create({
+          transfer: true
+        })
+
+        if (res.status === 'complete') {
+          setSignUpActive({
+            session: res.createdSessionId
+          })
+          router.push('/dashboard')
+        }
+      } else {
+          // Sign in to a OAuth/app account
+          await signIn.authenticateWithRedirect({
+            strategy: method as any,
+            redirectUrl: '/dashboard',
+            redirectUrlComplete: '/dashboard',
+          });
+          console.log('hello')
+      }
     } catch (err: any) {
-      throw new Error(err);
+        throw new Error(err);
+    } finally {
+      setOAuthLoading('')
     }
   };
 
-  return <div className="flex flex-col items-center justify-center h-full relative">
+  useEffect(() => { 
+    const userNeedsToBeCreated = signIn?.firstFactorVerification.status === 'transferable' && signIn?.firstFactorVerification.error?.code === 'external_account_not_found'
+    if (userNeedsToBeCreated && signIn.firstFactorVerification.strategy) {
+      handleOauth(signIn.firstFactorVerification.strategy)
+    }
+  },[signIn])
+
+  return <div className={cn(
+    "flex flex-col items-center justify-center h-full relative",
+    `${oAuthLoading ? "opacity-50 pointer-events-none" : ''}`
+  )}>
     <div className="flex flex-col gap-4 max-w-[450px] p-6 m-auto">
       <Image width={200} height={80} src="/images/logo.svg" alt="logo" />
       <FormProvider {...method}>
@@ -96,13 +144,15 @@ export default function SignIn() {
               variant="outline"
               className="flex-1"
               onClick={() => handleOauth('oauth_google')}
-            >
+              loading={oAuthLoading === 'oauth_google'}
+              >
               <img src="/icons/google.svg" className="w-[20px]" />
             </Button>
             <Button
               variant="outline"
               className="flex-1"
               onClick={() => handleOauth('oauth_facebook')}
+              loading={oAuthLoading === 'oauth_facebook'}
             >
               <img src="/icons/facebook.svg" className="w-[20px]" />
             </Button>

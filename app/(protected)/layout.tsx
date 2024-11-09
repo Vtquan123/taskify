@@ -1,10 +1,13 @@
 "use client"
 
 import { cn } from "@/lib/utils"
+import { trpc } from "@/trpc/client"
 import { SideNav, HeadNav, UserNav } from "@components"
+import { useQueryClient } from "@tanstack/react-query"
+import { getQueryKey } from "@trpc/react-query"
 import Image from "next/image"
 import Link from "next/link"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 const getNavigation = (collapse?: boolean) => [
     {
@@ -46,6 +49,9 @@ const getNavigation = (collapse?: boolean) => [
   ]
 
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
+  const user = trpc.user.me.useQuery()
+  const queryClient = useQueryClient()
+  queryClient.setQueryData(getQueryKey(trpc.user.me), user.data)
   const [collapse, setCollapse] = useState(false)
   const handleCollapse = () => setCollapse(prev => !prev)
   return <>

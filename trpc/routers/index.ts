@@ -1,11 +1,14 @@
-import { createCallerFactory, createTRPCRouter, protectedProcedure, publicProcedure } from "../init";
+import { createCallerFactory, createTRPCRouter, publicProcedure } from "../init";
+import userRouters from "./user";
 import { webhooks } from "./webhooks";
 
 export const appRouter = createTRPCRouter({
   healthCheck: publicProcedure.query(({ ctx }) => { 
     return {auth: ctx.auth}
   }),
-  webhooks: webhooks
+  webhooks: webhooks,
+
+  user: userRouters
 })
 
 const createCaller = createCallerFactory(appRouter)

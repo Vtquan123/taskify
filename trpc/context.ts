@@ -1,9 +1,10 @@
 import { getAuth } from "@clerk/nextjs/server";
 import { CreateNextContextOptions } from "@trpc/server/adapters/next";
 
-export const createTRPCContext = async ({ req }: CreateNextContextOptions) => { 
+export const createTRPCContext = async ({ req }: CreateNextContextOptions) => {
+  const auth = getAuth(req)
   return {
-    auth: getAuth(req),
+    auth,
   }
 }
 type Optional<T> = {
