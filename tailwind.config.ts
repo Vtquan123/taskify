@@ -9,7 +9,7 @@ function generateSpacing(space: any) {
 }
 
 module.exports = {
-  darkMode: ["class"],
+  darkMode: ["selector"],
   content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
@@ -34,7 +34,7 @@ module.exports = {
 				base: '14px'
 			},
   		colors: {
-  			border: 'hsl(var(--border))',
+  			border: 'var(--border)',
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',
   			background: 'var(--background)',
@@ -56,7 +56,7 @@ module.exports = {
   				foreground: 'hsl(var(--destructive-foreground))'
   			},
   			muted: {
-  				DEFAULT: 'hsl(var(--muted))',
+  				DEFAULT: 'var(--muted)',
   				foreground: 'hsl(var(--muted-foreground))'
   			},
   			accent: {
@@ -64,11 +64,11 @@ module.exports = {
   				foreground: 'hsl(var(--accent-foreground))'
   			},
   			popover: {
-  				DEFAULT: 'hsl(var(--popover))',
+  				DEFAULT: 'var(--popover)',
   				foreground: 'hsl(var(--popover-foreground))'
   			},
   			card: {
-  				DEFAULT: 'hsl(var(--card))',
+  				DEFAULT: 'var(--card)',
   				foreground: 'hsl(var(--card-foreground))'
   			},
   			accentGreen: 'var(--accent-green)',
@@ -127,8 +127,15 @@ module.exports = {
 			transitionProperty: {
 				'width': 'width',
 				'padding': 'padding'
-			}
+			},
+			// before: {
+			// 	borderColor: '#000000'
+			// },
+			// after: {
+			// 	borderColor: '#000000'
+			// }
   	}
   },
-  plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate")],
 }

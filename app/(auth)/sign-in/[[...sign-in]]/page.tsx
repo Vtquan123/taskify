@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils";
-import { useSignIn, useSignUp, SignIn as CLerkSignIn } from "@clerk/nextjs";
+import { useSignIn, useSignUp } from "@clerk/nextjs";
 import { Button, FormControl, FormField, FormItem, Input } from "@components";
 import Image from 'next/image'
 import Link from "next/link";

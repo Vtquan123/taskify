@@ -3,11 +3,19 @@
 import { cn } from "@/lib/utils"
 import { trpc } from "@/trpc/client"
 import { SideNav, HeadNav, UserNav } from "@components"
-import { useQueryClient } from "@tanstack/react-query"
-import { getQueryKey } from "@trpc/react-query"
+import { User } from "@prisma/client"
 import Image from "next/image"
 import Link from "next/link"
 import React, { useEffect, useState } from "react"
+
+interface UserProps extends Omit<User, 'createdAt' | 'updatedAt'> {
+  createdAt: string,
+  updatedAt: string
+}
+interface UserContextProps {
+  user: UserProps,
+  refetchUser: any
+}
 
 const getNavigation = (collapse?: boolean) => [
     {
@@ -46,25 +54,48 @@ const getNavigation = (collapse?: boolean) => [
       level: 0,
       link: '/teams'
     },
-  ]
+]
+
+export const UserContext = React.createContext<UserContextProps>(undefined!)
+
+const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => { 
+  const { data, refetch } = trpc.user.me.useQuery<any>()
+  const user = data as UserProps
+
+  useEffect(() => {
+    const theme = user?.setting?.theme
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark')
+      document.documentElement.classList.add('bg-background')
+    } else {
+      document.documentElement.classList.remove('dark')
+      document.documentElement.classList.remove('bg-background')
+    }
+  }, [user])
+
+  return <UserContext.Provider
+    value={{
+    user,
+    refetchUser: refetch
+  }}>
+    {children}
+  </UserContext.Provider>
+}
 
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
-  const user = trpc.user.me.useQuery()
-  const queryClient = useQueryClient()
-  queryClient.setQueryData(getQueryKey(trpc.user.me), user.data)
   const [collapse, setCollapse] = useState(false)
   const handleCollapse = () => setCollapse(prev => !prev)
-  return <>
+  return <UserProvider>
     <SideNav data={getNavigation(collapse)} className="hidden md:flex" collapse={collapse} handleCollapse={handleCollapse} />
     <HeadNav className="md:hidden" />
     <div className={cn(
-      "pt-[60px] md:pt-0 md:pl-[250px] flex flex-col transition-padding",
+      "pt-[60px] md:pt-0 md:pl-[220px] flex flex-col transition-padding h-[100vh] bg-background",
       `${collapse ? 'md:pl-[60px]' : ''}`
     )}>
-      <UserNav/>
-      <div className="flex-1 p-6">
+      <UserNav />
+      <div className="flex-1 px-6 pt-15">
         {children}
       </div>
     </div>
-  </>
+  </UserProvider>
 }
