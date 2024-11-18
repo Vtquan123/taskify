@@ -105,16 +105,19 @@ const renderNavigation = (data: NavItem[], collapse?: boolean) => {
 const SideNav: React.FC<SideNavProps> = ({ data, className, collapse, handleCollapse = () => { } }) => {
   return (
     <nav id="side-nav" className={cn(
-      'h-[100vh] w-[220px] bg-background1 border-r-[1px] border-borderGray fixed top-0 flex flex-col p-3 z-50 transition-width',
+      'group h-[100vh] w-[220px] bg-background1 border-r-[1px] border-borderGray fixed top-0 flex flex-col p-3 z-50 transition-width',
       `${collapse ? 'w-[60px] p-2' : ''}`,
       className
     )}>
       {renderNavigation(data, collapse)}
-      <div className={cn(
-        "absolute right-0 top-[58px] translate-x-1/2 transition-all",
-        `${collapse ? 'top-[33px]' : ''}`
-      )}>
-        <Button variant="outline" size="icon" className="rounded-[20px] w-[30px] h-[30px] dark:bg-background2 dark:border-borderGray" onClick={handleCollapse}>
+      <div
+        className={cn(
+        "absolute right-0 top-[60px] translate-x-1/2 transition-all opacity-0 group-hover:opacity-100",
+        `${collapse ? 'top-[36px]' : ''}`
+        )}
+        id="nav-collapse-btn"
+      >
+        <Button variant="outline" size="icon" className="rounded-full w-[25px] h-[25px] dark:bg-background2 dark:border-borderGray" onClick={handleCollapse}>
           <i className={cn(
             "ri-arrow-left-s-line text-[20px]",
             `${collapse ? 'ri-arrow-right-s-line' : ''}`
