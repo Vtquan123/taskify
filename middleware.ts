@@ -1,21 +1,30 @@
-import { clerkMiddleware, createRouteMatcher, WebhookEvent } from '@clerk/nextjs/server'
-import { WEBHOOK_SECRET } from './constants/common'
-import { Webhook } from 'svix'
-import { headers } from 'next/headers'
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
 
 const publicRoute = createRouteMatcher([
   '/',
+  '/api/webhooks(.*)',
+])
+
+const authRoute = createRouteMatcher([
   '/sign-in(.*)',
   '/sign-up(.*)',
   '/forgot-password(.*)',
   '/reset-password(.*)',
-  '/api/webhooks(.*)',
 ])
 
 export default clerkMiddleware(async (auth, req) => {
-  if (!publicRoute(req)) {
-    await auth.protect()
+  const { userId } = await auth()
+  const isPublicRoute = publicRoute(req)
+  const isAuthRoute = authRoute(req)
+
+  if (userId && authRoute(req)) {
+    return NextResponse.redirect(new URL('/dashboard', req.url))
+  }
+  if (!userId) {
+    if (!isPublicRoute && !isAuthRoute) {
+      return NextResponse.redirect(new URL('/sign-in', req.url))
+    }
   }
 })
 
