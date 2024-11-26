@@ -105,7 +105,7 @@ const renderNavigation = (data: NavItem[], collapse?: boolean) => {
 const SideNav: React.FC<SideNavProps> = ({ data, className, collapse, handleCollapse = () => { } }) => {
   return (
     <nav id="side-nav" className={cn(
-      'group h-[100vh] w-[220px] bg-background1 border-r-[1px] border-borderGray fixed top-0 flex flex-col p-3 z-50 transition-width',
+      'group h-[100vh] w-[220px] bg-background1 border-r-[1px] border-borderGray fixed top-0 flex flex-col p-3 z-40 transition-width',
       `${collapse ? 'w-[60px] p-2' : ''}`,
       className
     )}>
@@ -131,7 +131,7 @@ const SideNav: React.FC<SideNavProps> = ({ data, className, collapse, handleColl
 const HeadNav: React.FC<HeadNavProps> = ({ className }) => {
   // const [open, setOpen] = useState(false)
   return <nav id="head-nav" className={cn(
-    'w-[100vw] h-[60px] fixed top-0 bg-background1 border-b-[1px] border-borderGray flex py-4 px-6 justify-between items-center z-50',
+    'w-[100vw] h-[60px] fixed top-0 bg-background1 border-b-[1px] border-borderGray flex py-4 px-6 justify-between items-center z-30',
     className
   )}>
     <div>Logo</div>
@@ -173,7 +173,7 @@ const UserNav: React.FC<any> = ({ className }) => {
   }
 
   return <div className={cn(
-    'flex items-center justify-between py-[10px] px-6 w-full fixed top-0 md:w-[-webkit-fill-available]',
+    'flex items-center justify-between py-[10px] px-6 w-full fixed top-0 md:w-[-webkit-fill-available] z-50',
     className
   )}>
     <p className="text-[1.5rem] font-semibold">{title}</p>

@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils"
 import { trpc } from "@/trpc/client"
-import { SideNav, HeadNav, UserNav } from "@components"
+import { SideNav, HeadNav, UserNav, Progress } from "@components"
 import { User } from "@prisma/client"
 import Image from "next/image"
 import Link from "next/link"
@@ -59,8 +59,9 @@ const getNavigation = (collapse?: boolean) => [
 export const UserContext = React.createContext<UserContextProps>(undefined!)
 
 const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => { 
-  const { data, refetch } = trpc.user.me.useQuery<any>()
+  const { data, refetch, isLoading } = trpc.user.me.useQuery<any>()
   const user = data as UserProps
+  const [loading, setLoading] = useState(0)
 
   useEffect(() => {
     const theme = user?.setting?.theme
@@ -73,11 +74,33 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     }
   }, [user])
 
+  const calculateLoading = (delay:number, currentLoading: number, prevLoading: number, index: number, saved: number) => {
+    if (isLoading) {
+      setTimeout(() => {
+        let newCurrentLoading = (currentLoading + prevLoading) * (100 - saved)/100
+        let newPrevLoading = currentLoading * (100 - saved)/100
+        if (index > 10) { 
+          setLoading(saved + newCurrentLoading)
+          calculateLoading(delay*2, saved + newCurrentLoading, newPrevLoading, 1, saved + newCurrentLoading)
+        } else {
+          setLoading(saved + newCurrentLoading)
+          calculateLoading(delay, saved + newCurrentLoading, newPrevLoading, index + 1, saved)
+        }
+      },delay)
+    }
+    return
+}
+
+  useEffect(() => {
+    calculateLoading(30, 0, 1, 1, 0)
+  }, [isLoading])
+
   return <UserContext.Provider
     value={{
     user,
     refetchUser: refetch
-  }}>
+    }}>
+    {isLoading && <Progress value={loading} className="rounded-none fixed top-0 h-[3px] bg-background w-[100vw] z-50"/>}
     {children}
   </UserContext.Provider>
 }
